@@ -127,7 +127,7 @@ Concepts:
 
 # Architecture
 
-![https://github.com/open-integration/core/raw/master/docs/architecture.png]
+![https://github.com/open-integration/core/raw/master/docs/architecture.png](https://github.com/open-integration/core/raw/master/docs/architecture.png)
 
 Flow:
 
