@@ -1,3 +1,5 @@
+![cover](imgs/cover.jpg)
+
 From [whatisrss.com](http://www.whatisrss.com/)
 >RSS is a format for delivering regularly changing web content. Many news-related sites, weblogs, and other online publishers syndicate their content as an RSS Feed to whoever wants it.
 
