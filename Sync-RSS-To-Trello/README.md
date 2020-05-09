@@ -63,7 +63,7 @@ sources:
     * Targets
     * Bindings
 * Golang template engine is used here to template the credentials and other values that cannot be published. It uses [gomplate]() to extand the functionality of the basic tempalte library
-* Additional datasources that are injected into the template languare are:
+* Additional datasources that are injected into the template language are:
     * {{ .item }}
     * {{ .source }}
     * {{ .target }}
