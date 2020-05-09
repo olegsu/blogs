@@ -48,9 +48,10 @@ targets:
         title: '[{{ .source.name }}] Listen to: {{ .item.title }}'
         description: "{{ .feed.title }}\nLink: {{ .item.link }}\nDescription: {{ .item.description }}"
 
-rss:
+sources:
 - name: stuffyoushouldknow
-  url: https://feeds.megaphone.fm/stuffyoushouldknow
+  rss:
+    url: https://feeds.megaphone.fm/stuffyoushouldknow
   filter:
     just-released: '{{ ((time.Now).Add (time.Hour -24)).Before (time.Parse "2006-01-02T15:04:05Z" .item.publishedParsed) }}
 ```
