@@ -45,7 +45,7 @@ targets:
       board-id: '{{ env.Getenv "TRELLO_BOARD_ID" }}'
       list-id: '{{ env.Getenv "TRELLO_LIST_ID" }}'
       card:
-        title: '[{{ .rss.name }}] Listen to: {{ .item.title }}'
+        title: '[{{ .source.name }}] Listen to: {{ .item.title }}'
         description: "{{ .feed.title }}\nLink: {{ .item.link }}\nDescription: {{ .item.description }}"
 
 rss:
@@ -64,7 +64,7 @@ rss:
 * Golang template engine is used here to template the credentials and other values that cannot be published. It uses [gomplate]() to extand the functionality of the basic tempalte library
 * Additional datasources that are injected into the template languare are:
     * {{ .item }}
-    * {{ .rss }}
+    * {{ .source }}
     * {{ .target }}
     * {{ .binding }}
     * {{ .feed }}
