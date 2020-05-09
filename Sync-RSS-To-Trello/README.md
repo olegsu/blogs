@@ -34,7 +34,7 @@ In this example, we will sync the podcast show [Stuff You Should Know](https://w
 ```yaml
 bindings:
 - name: stuffyoushouldknow
-  rss: stuffyoushouldknow
+  source: stuffyoushouldknow
   target: This Week List
 
 targets:
@@ -59,7 +59,7 @@ sources:
 
 * Using open-integration - read my previous [post](../Continuous-Automation-with-Open-Integration/post.md) about it. What is the architecture, what are the usec-case a more.
 * The `feed.yaml` is composition of:   
-    * RSS feeds
+    * Sources
     * Targets
     * Bindings
 * Golang template engine is used here to template the credentials and other values that cannot be published. It uses [gomplate]() to extand the functionality of the basic tempalte library
