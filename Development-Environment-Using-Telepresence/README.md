@@ -26,31 +26,31 @@ Here is an architecture diagram made by Alexei Ledenev (not official).
 ![cover](imgs/diagram.png)
 
 Let’s take a look at what happens when we run the telepresence command…
-[ Local ] — Running the command (Telepresence will use default kubeconfig file or $KUNECONFIG, and work with the current context. Switch context or specify exactly what context and which namespace to use). Telepresence starts doing 2 things
-[ REMOTE ] The original deployment is scaled to 0 replicas and a new one deployment is created with 1 replica. This is an identical deployment to the one that was scaled down. The different part is the image, that is now running Telepresence’s image. Once the new deployment is ready, it opens a connection using port-forward to the local machine to forward all the network traffic, and mount the volumes from the cluster to the local file system.
-[ Local ] On the local machine a new process is spawned as a subprocess of telepresence
+* [ Local ] — Running the command (Telepresence will use default kubeconfig file or $KUNECONFIG, and work with the current context. Switch context or specify exactly what context and which namespace to use). Telepresence starts doing 2 things
+    * [ REMOTE ] The original deployment is scaled to 0 replicas and a new one deployment is created with 1 replica. This is an identical deployment to the one that was scaled down. The different part is the image, that is now running Telepresence’s image. Once the new deployment is ready, it opens a connection using port-forward to the local machine to forward all the network traffic, and mount the volumes from the cluster to the local file system.
+    * [ Local ] On the local machine a new process is spawned as a subprocess of telepresence
 The subprocess gets all the environment variables of the deployment, meaning that it knows about all the default Kubernetes variables that are injected to the pod and all the variables from the spec
 $TELEPRESENCE_ROOT that indicated where the pod volumes are mounted on the local machine.
-[ Local ] Once the connection is established, we have a new shell and we can start a local process of our service. Since all the environment variables are passed from the deployment, we don’t need any other information. Simply starting the process and will connect it to the remote database and the remote services. All the HTTP requests that are coming to our service will be proxied.
+* [ Local ] Once the connection is established, we have a new shell and we can start a local process of our service. Since all the environment variables are passed from the deployment, we don’t need any other information. Simply starting the process and will connect it to the remote database and the remote services. All the HTTP requests that are coming to our service will be proxied.
 This is a very high-level process overview, you read more about it on the official Telepresence page. It also describes other configuration options that Telepresence supports to forward the traffic and mount the volumes.
 
 Telepresence is not the only solution out there(we just published a post about okteto), and like any other tool it has pros and cons.
 
 ### Pros:
 
-Almost zero configuration. Since all the variables are injected into the new process, most of the time don’t need to change anything.
+* Almost zero configuration. Since all the variables are injected into the new process, most of the time don’t need to change anything.
 Exceptions are:
-When the service is looking for a file on the file system. We need to support in code prefix the paths to the files, we have the $TELEPRESENCE_ROOT that points to the location where the remote fs is mounted.
-When running more than one service that is running on the same port, we need to generate ports dynamically and use the flag — expose LOCAL:REMOTE to avoid conflicts.
-Production like environments. Our development environment becomes as much as possible close to the production environment (It also is possible to debug the production environment itself, but please don’t do that … )
-We run only one service at the time. Which means that our local machine is not running a heavy load at all.
-We are running the service on the local machine, which means we can use our favorite dev tools.
+* When the service is looking for a file on the file system. We need to support in code prefix the paths to the files, we have the $TELEPRESENCE_ROOT that points to the location where the remote fs is mounted.
+* When running more than one service that is running on the same port, we need to generate ports dynamically and use the flag `--expose LOCAL:REMOTE` to avoid conflicts.
+* Production like environments. Our development environment becomes as much as possible close to the production environment (It also is possible to debug the production environment itself, but please don’t do that … )
+* We run only one service at the time. Which means that our local machine is not running a heavy load at all.
+* We are running the service on the local machine, which means we can use our favorite dev tools.
 It helps with onboarding of new team members. When a new developer is joining the team, we don’t need to teach him about a complex development environment. Just to make sure that we have a remote environment configured.
 
 ### Cons:
-It seems like magic. I consider it to be both pros and cons, as we need to explain exactly what is going on behind the scenes.
-It requires a stable connection. As all the traffic and the file system are proxied through the SSH tunnel. If the local machine loses the connection we need to manually clean the cluster and the leftovers on the local machine. Of course, it is possible to use Telepresence with the local Kubernetes cluster, but personally, I don’t find it useful.
-Scale. The number of remote environments can grow really quickly as the number of developers grows, which will increase the cost of the cloud.
+* It seems like magic. I consider it to be both pros and cons, as we need to explain exactly what is going on behind the scenes.
+* It requires a stable connection. As all the traffic and the file system are proxied through the SSH tunnel. If the local machine loses the connection we need to manually clean the cluster and the leftovers on the local machine. Of course, it is possible to use Telepresence with the local Kubernetes cluster, but personally, I don’t find it useful.
+* Scale. The number of remote environments can grow really quickly as the number of developers grows, which will increase the cost of the cloud.
 
 # Summary
 Kubernetes brought a lot of changes to the orchestration world. With the change in the state of mind, we are facing new challenges in the scope of managing the development environment. With the current tools available in the CNCF world we can leverage our remote Kubernetes cluster to make the development process easier, faster, and more reliable. In the next post, we will share our migration process from local environments using docker-compose to Telepresence. We also created some custom tools to make the development experience as smooth as possible.
